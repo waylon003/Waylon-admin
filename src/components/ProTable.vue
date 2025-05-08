@@ -1,5 +1,9 @@
 <script lang="ts" setup>
 import type { ProTable } from './types'
+enum tableColumnType {
+	type = ['selection', 'index', 'expand'],
+}
+import { ElTable } from 'element-plus'
 
 const props = withDefaults(defineProps<ProTable>(), {
 	loading: false,
@@ -25,7 +29,6 @@ const props = withDefaults(defineProps<ProTable>(), {
 const emit = defineEmits<{
 	'update:page': [page: number]
 	'update:limit': [limit: number]
-	tableLoading: [loading: boolean]
 	changePaging: [page: number, limit: number]
 }>()
 // 处理分页变化
@@ -44,15 +47,30 @@ const currentData = computed(() => {
 	const end = start + props.limit
 	return props.data.slice(start, end)
 })
-onMounted(() => {
-	emit('tableLoading', props.loading)
-})
+
+const isType = computed(() => tableColumnType.type.includes(props.column[0]?.type))
+
+const columnList = computed(() => (isType ? props.column.slice(1) : props.column))
+
+const tableRef = ref<InstanceType<typeof ElTable>>()
+
+defineExpose({ element: tableRef })
 </script>
 <template>
-	<el-table :data="currentData" v-loading="props.loading" v-bind="props.tableProps">
-		<template v-for="item in props.column" :key="item.prop">
-			<el-table-column v-bind="item"></el-table-column>
-		</template>
+	<el-table :data="currentData" v-loading="props.loading" v-bind="props.tableProps" ref="tableRef">
+		<el-table-column v-if="isType" v-bind="props.column[0]"> </el-table-column>
+		<el-table-column v-for="item in columnList" :key="item.prop" v-bind="item">
+			<template #default="scope">
+				<slot :name="item.prop" v-bind="scope">
+					{{ scope.row[item.prop] }}
+				</slot>
+			</template>
+			<template #header="scope">
+				<slot :name="`${item.prop}-header`" v-bind="scope">
+					{{ item.label }}
+				</slot>
+			</template>
+		</el-table-column>
 	</el-table>
 	<el-pagination
 		v-bind="props.paginationProps"

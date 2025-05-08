@@ -4,7 +4,6 @@ interface Item {
 	name: string
 	address: string
 }
-
 const createData = (): Item[] => {
 	const arr: Item[] = []
 	for (let i = 0; i < 100; i++) {
@@ -18,6 +17,9 @@ const createData = (): Item[] => {
 }
 
 const column = ref([
+	{
+		type: 'selection',
+	},
 	{
 		prop: 'date',
 		label: '时间',
@@ -60,7 +62,10 @@ const pageChange = (page: any, limit: any) => {
 		v-model:limit="limit"
 		:total="total"
 		@changePaging="pageChange"
-	></pro-table>
+	>
+		<template #date="{ row }"> 自定义内容：{{ row.date }} </template>
+		<template #date-header="{ column }"> 自定义表头：{{ column.label }} </template>
+	</pro-table>
 </template>
 
 <style scoped></style>
