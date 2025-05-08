@@ -38,10 +38,11 @@ const column = ref([
 const loading = ref(false)
 const page = ref(1)
 const limit = ref(10)
+const total = ref(100)
 </script>
 
 <template>
-	<pro-table :data="data" :column="column" :loading="loading" :page="page" :limit="limit"></pro-table>
+	<pro-table :data="data" :column="column" :loading="loading" :page="page" :limit="limit" :total="total"></pro-table>
 </template>
 
 <style scoped></style>
