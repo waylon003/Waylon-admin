@@ -59,7 +59,7 @@ const pageChange = (page: any, limit: any) => {
 		v-model:page="page"
 		v-model:limit="limit"
 		:total="total"
-		@pageChange="pageChange"
+		@changePaging="pageChange"
 	></pro-table>
 </template>
 
