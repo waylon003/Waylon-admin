@@ -9,7 +9,7 @@ const createData = (): Item[] => {
 	const arr: Item[] = []
 	for (let i = 0; i < 100; i++) {
 		arr.push({
-			date: '2016-05-03',
+			date: `2016-05-03 xx${i}`,
 			name: '王小明',
 			address: '上海市普陀区金沙江路 1518' + i,
 		})

@@ -6,6 +6,10 @@ const props = withDefaults(defineProps<ProTable>(), {
 	data: [],
 	tableProps: {
 		border: true,
+		style: {
+			width: '100%',
+			height: '500px',
+		},
 	},
 	column: [],
 	paginationProps: {
@@ -35,12 +39,17 @@ const handleSizeChange = (limit: number) => {
 const pageChange = (p: number, l: number) => {
 	emit('changePaging', p, l)
 }
+const currentData = computed(() => {
+	const start = (props.page - 1) * props.limit
+	const end = start + props.limit
+	return props.data.slice(start, end)
+})
 onMounted(() => {
 	emit('tableLoading', props.loading)
 })
 </script>
 <template>
-	<el-table :data="props.data" style="width: 100%" v-loading="props.loading" v-bind="props.tableProps">
+	<el-table :data="currentData" v-loading="props.loading" v-bind="props.tableProps">
 		<template v-for="item in props.column" :key="item.prop">
 			<el-table-column v-bind="item"></el-table-column>
 		</template>
