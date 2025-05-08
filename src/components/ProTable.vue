@@ -47,8 +47,8 @@ onMounted(() => {
 	<el-pagination
 		v-bind="props.paginationProps"
 		:total="props.total"
-		v-model:page-size="props.limit"
-		v-model:current-page="props.page"
+		:page-size="props.limit"
+		:current-page="props.page"
 		@size-change="handleSizeChange"
 		@current-change="handlePageChange"
 	/>
