@@ -8,4 +8,5 @@ export interface ProTable {
 	type?: 'selection' | 'index' | 'expand' | 'default'
 	paginationProps?: any
 	tableProps?: any
+	pageSizes?: any
 }

@@ -9,10 +9,11 @@ const props = withDefaults(defineProps<ProTable>(), {
 	},
 	column: [],
 	paginationProps: {
-		'page-sizes': [10, 20, 30],
 		background: true,
-		layout: 'prev, pager, next, jumper, ->, total',
+		layout: 'total, sizes, prev, pager, next, jumper',
+		pageSizes: [10, 20, 30],
 	},
+	pageSizes: [10, 20, 30],
 	page: 1,
 	limit: 10,
 	total: 100,
@@ -21,18 +22,18 @@ const emit = defineEmits<{
 	'update:page': [page: number]
 	'update:limit': [limit: number]
 	tableLoading: [loading: boolean]
-	pageChange: [page: number]
-	limitChange: [limit: number]
+	changePaging: [page: number, limit: number]
 }>()
 // 处理分页变化
 const handlePageChange = (page: number) => {
 	emit('update:page', page)
-	emit('pageChange', page)
 }
 
 const handleSizeChange = (limit: number) => {
 	emit('update:limit', limit)
-	emit('limitChange', limit)
+}
+const pageChange = (p: number, l: number) => {
+	emit('changePaging', p, l)
 }
 onMounted(() => {
 	emit('tableLoading', props.loading)
@@ -51,6 +52,7 @@ onMounted(() => {
 		:current-page="props.page"
 		@size-change="handleSizeChange"
 		@current-change="handlePageChange"
+		@change="pageChange"
 	/>
 </template>
 

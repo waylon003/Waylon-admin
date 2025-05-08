@@ -178,8 +178,8 @@ const column = ref([
 const loading = ref(false)
 const page = ref(1)
 const limit = ref(10)
-const pageChange = (e: any) => {
-	console.log(e, page.value, '当前页')
+const pageChange = (page: any, limit: any) => {
+	console.log(page, limit, '当前页和当前大小')
 }
 </script>
 
@@ -191,7 +191,7 @@ const pageChange = (e: any) => {
 		v-model:page="page"
 		v-model:limit="limit"
 		:total="data.length"
-		@pageChange="pageChange"
+		@changePaging="pageChange"
 	></pro-table>
 </template>
 
