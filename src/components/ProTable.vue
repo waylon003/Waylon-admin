@@ -9,6 +9,7 @@ const props = withDefaults(defineProps<ProTable>(), {
 	},
 	column: [],
 	paginationProps: {
+		'page-sizes': [10, 20, 30],
 		background: true,
 		layout: 'prev, pager, next, jumper, ->, total',
 	},

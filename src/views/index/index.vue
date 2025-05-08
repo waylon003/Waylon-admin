@@ -20,6 +20,146 @@ const data = ref([
 		name: 'Tom',
 		address: 'No. 189, Grove St, Los Angeles',
 	},
+	{
+		date: '2016-05-03',
+		name: 'Tom',
+		address: 'No. 189, Grove St, Los Angeles',
+	},
+	{
+		date: '2016-05-02',
+		name: 'Tom',
+		address: 'No. 189, Grove St, Los Angeles',
+	},
+	{
+		date: '2016-05-04',
+		name: 'Tom',
+		address: 'No. 189, Grove St, Los Angeles',
+	},
+	{
+		date: '2016-05-01',
+		name: 'Tom',
+		address: 'No. 189, Grove St, Los Angeles',
+	},
+	{
+		date: '2016-05-03',
+		name: 'Tom',
+		address: 'No. 189, Grove St, Los Angeles',
+	},
+	{
+		date: '2016-05-02',
+		name: 'Tom',
+		address: 'No. 189, Grove St, Los Angeles',
+	},
+	{
+		date: '2016-05-04',
+		name: 'Tom',
+		address: 'No. 189, Grove St, Los Angeles',
+	},
+	{
+		date: '2016-05-01',
+		name: 'Tom',
+		address: 'No. 189, Grove St, Los Angeles',
+	},
+	{
+		date: '2016-05-03',
+		name: 'Tom',
+		address: 'No. 189, Grove St, Los Angeles',
+	},
+	{
+		date: '2016-05-02',
+		name: 'Tom',
+		address: 'No. 189, Grove St, Los Angeles',
+	},
+	{
+		date: '2016-05-04',
+		name: 'Tom',
+		address: 'No. 189, Grove St, Los Angeles',
+	},
+	{
+		date: '2016-05-01',
+		name: 'Tom',
+		address: 'No. 189, Grove St, Los Angeles',
+	},
+	{
+		date: '2016-05-03',
+		name: 'Tom',
+		address: 'No. 189, Grove St, Los Angeles',
+	},
+	{
+		date: '2016-05-02',
+		name: 'Tom',
+		address: 'No. 189, Grove St, Los Angeles',
+	},
+	{
+		date: '2016-05-04',
+		name: 'Tom',
+		address: 'No. 189, Grove St, Los Angeles',
+	},
+	{
+		date: '2016-05-01',
+		name: 'Tom',
+		address: 'No. 189, Grove St, Los Angeles',
+	},
+	{
+		date: '2016-05-03',
+		name: 'Tom',
+		address: 'No. 189, Grove St, Los Angeles',
+	},
+	{
+		date: '2016-05-02',
+		name: 'Tom',
+		address: 'No. 189, Grove St, Los Angeles',
+	},
+	{
+		date: '2016-05-04',
+		name: 'Tom',
+		address: 'No. 189, Grove St, Los Angeles',
+	},
+	{
+		date: '2016-05-01',
+		name: 'Tom',
+		address: 'No. 189, Grove St, Los Angeles',
+	},
+	{
+		date: '2016-05-03',
+		name: 'Tom',
+		address: 'No. 189, Grove St, Los Angeles',
+	},
+	{
+		date: '2016-05-02',
+		name: 'Tom',
+		address: 'No. 189, Grove St, Los Angeles',
+	},
+	{
+		date: '2016-05-04',
+		name: 'Tom',
+		address: 'No. 189, Grove St, Los Angeles',
+	},
+	{
+		date: '2016-05-01',
+		name: 'Tom',
+		address: 'No. 189, Grove St, Los Angeles',
+	},
+	{
+		date: '2016-05-03',
+		name: 'Tom',
+		address: 'No. 189, Grove St, Los Angeles',
+	},
+	{
+		date: '2016-05-02',
+		name: 'Tom',
+		address: 'No. 189, Grove St, Los Angeles',
+	},
+	{
+		date: '2016-05-04',
+		name: 'Tom',
+		address: 'No. 189, Grove St, Los Angeles',
+	},
+	{
+		date: '2016-05-01',
+		name: 'Tom',
+		address: 'No. 189, Grove St, Los Angeles',
+	},
 ])
 const column = ref([
 	{
@@ -38,11 +178,21 @@ const column = ref([
 const loading = ref(false)
 const page = ref(1)
 const limit = ref(10)
-const total = ref(100)
+const pageChange = (e: any) => {
+	console.log(e, page.value, '当前页')
+}
 </script>
 
 <template>
-	<pro-table :data="data" :column="column" :loading="loading" :page="page" :limit="limit" :total="total"></pro-table>
+	<pro-table
+		:data="data"
+		:column="column"
+		:loading="loading"
+		v-model:page="page"
+		v-model:limit="limit"
+		:total="data.length"
+		@pageChange="pageChange"
+	></pro-table>
 </template>
 
 <style scoped></style>
