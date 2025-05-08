@@ -1,7 +1,47 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const data = ref([
+	{
+		date: '2016-05-03',
+		name: 'Tom',
+		address: 'No. 189, Grove St, Los Angeles',
+	},
+	{
+		date: '2016-05-02',
+		name: 'Tom',
+		address: 'No. 189, Grove St, Los Angeles',
+	},
+	{
+		date: '2016-05-04',
+		name: 'Tom',
+		address: 'No. 189, Grove St, Los Angeles',
+	},
+	{
+		date: '2016-05-01',
+		name: 'Tom',
+		address: 'No. 189, Grove St, Los Angeles',
+	},
+])
+const column = ref([
+	{
+		prop: 'date',
+		label: '时间',
+	},
+	{
+		prop: 'name',
+		label: '名字',
+	},
+	{
+		prop: 'address',
+		label: '地址',
+	},
+])
+const loading = ref(false)
+const page = ref(1)
+const limit = ref(10)
+</script>
 
 <template>
-	<pro-table></pro-table>
+	<pro-table :data="data" :column="column" :loading="loading" :page="page" :limit="limit"></pro-table>
 </template>
 
 <style scoped></style>

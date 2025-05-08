@@ -4,7 +4,7 @@ export interface ProTable {
 	page?: number
 	limit?: number
 	total?: number
-	columnProps?: any
+	column?: any
 	type?: 'selection' | 'index' | 'expand' | 'default'
 	paginationProps?: any
 	tableProps?: any
