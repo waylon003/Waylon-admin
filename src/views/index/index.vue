@@ -4,20 +4,62 @@ interface Item {
 	name: string
 	address: string
 	tag: string
+	dataNum: number
 }
 const createData = (): Item[] => {
 	const arr: Item[] = []
-	for (let i = 0; i < 100; i++) {
+	for (let i = 0; i < 50; i++) {
 		arr.push({
 			date: `2016-05-03 xx${i}`,
 			name: '王小明',
 			address: '上海市普陀区金沙江路 1518' + i,
 			tag: i % 2 === 0 ? 'primary' : 'success',
+			dataNum: i,
 		})
 	}
 	return arr
 }
-
+const selectList = ref([
+	{
+		value: 10,
+		label: '0-9',
+	},
+	{
+		value: 20,
+		label: '10-19',
+	},
+	{
+		value: 30,
+		label: '20-29',
+	},
+	{
+		value: 40,
+		label: '30-39',
+	},
+	{
+		value: 50,
+		label: '40-49',
+	},
+])
+const addressSearch = (keyword: string) => {
+	if (!keyword) {
+		data.value = createData() // 如果关键字为空，恢复原始数据
+		return
+	}
+	const regex = new RegExp(keyword, 'i') // 'i' 表示不区分大小写
+	data.value = data.value.filter((item) => {
+		return regex.test(item.address)
+	})
+}
+const numberSelect = (value: number) => {
+	if (!value) {
+		data.value = createData() // 如果关键字为空，恢复原始数据
+		return
+	}
+	data.value = data.value.filter((item) => {
+		return item.dataNum < value && item.dataNum > value - 10
+	})
+}
 const column = ref([
 	{
 		type: 'selection',
@@ -36,12 +78,28 @@ const column = ref([
 		prop: 'address',
 		label: '地址',
 		checked: true,
+		eve: {
+			type: 'search',
+			value: '',
+			event: addressSearch,
+		},
+	},
+	{
+		prop: 'dataNum',
+		label: '数字排序',
+		checked: true,
+		sortable: true,
+		eve: {
+			type: 'select',
+			data: selectList.value,
+			value: '',
+			event: numberSelect,
+		},
 	},
 	{
 		prop: 'tag',
 		label: 'tsx插槽标签',
 		checked: true,
-
 		/**
 		 *
 		 * @param {any} text 当前行的值
@@ -61,6 +119,7 @@ const column = ref([
 		checked: false,
 	},
 ])
+
 const loading = ref(false)
 const page = ref(1)
 const limit = ref(10)

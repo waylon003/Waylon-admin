@@ -3,6 +3,11 @@ import type { Column, ProTable } from './types'
 import { ElTable } from 'element-plus'
 import Sortable from 'sortablejs'
 const tableColumnType = ['selection', 'index', 'expand']
+const columnHeaderType = new Map([
+	['search', 'Search'],
+	['select', 'BrushFilled'],
+])
+
 const props = withDefaults(defineProps<ProTable>(), {
 	loading: false,
 	tableProps: {
@@ -78,12 +83,13 @@ onMounted(() => {
 		if (checkWrapper) {
 			Sortable.create(checkWrapper, {
 				animation: 300,
-				handle: '.el-checkbox',
+				handle: '.checkbox-item',
 				onEnd({ newIndex, oldIndex }) {
 					if (typeof newIndex === 'number' && typeof oldIndex === 'number') {
-						console.log(columnChecks.value, 'columnChecks')
 						const columnCopy = [...columnChecks.value]
-						;[columnCopy[oldIndex], columnCopy[newIndex]] = [columnCopy[newIndex], columnCopy[oldIndex]]
+						const targetItem = columnCopy[oldIndex]
+						columnCopy.splice(oldIndex, 1)
+						columnCopy.splice(newIndex, 0, targetItem)
 						columnList.value = columnCopy
 					}
 				},
@@ -91,6 +97,11 @@ onMounted(() => {
 		}
 	})
 })
+const fixedColumn = (string: 'left' | 'right', item: Column) => {
+	columnList.value = columnChecks.value.map((column) =>
+		item.prop === column.prop ? { ...column, fixed: string } : column,
+	) as Column[]
+}
 </script>
 <template>
 	<div class="flex flex-end mb-20">
@@ -101,13 +112,21 @@ onMounted(() => {
 			<template #dropdown>
 				<div class="p-20 flex-box" ref="checkRef">
 					<div class="checkbox-list">
-						<template v-for="(item, index) in columnChecks" :key="`${item.prop}-${item.label}`">
+						<div
+							class="checkbox-item flex"
+							v-for="(item, index) in columnChecks"
+							:key="`${item.prop}-${item.label}`"
+						>
 							<el-checkbox
 								v-model="item.checked"
 								:label="index + 1 + '.' + item.label"
 								:size="item.size || 'large'"
 							/>
-						</template>
+							<div class="flex ml-20">
+								<el-button @click="fixedColumn('left', item)">左固定</el-button>
+								<el-button @click="fixedColumn('right', item)">右固定</el-button>
+							</div>
+						</div>
 					</div>
 				</div>
 			</template>
@@ -134,7 +153,41 @@ onMounted(() => {
 			</template>
 			<template #header="scope">
 				<slot :name="`${item.prop}-header`" v-bind="scope">
-					{{ item.label }}
+					<span>{{ item.label }}</span>
+					<template v-if="item.eve && columnHeaderType.has(item.eve.type)">
+						<el-dropdown trigger="click">
+							<span class="el-dropdown-link">
+								<el-icon class="el-icon--right" size="18px">
+									<component :is="columnHeaderType.get(item.eve.type)"></component>
+								</el-icon>
+							</span>
+							<template #dropdown>
+								<el-select
+									v-model="item.eve.value"
+									clearable
+									placeholder="请选择"
+									style="width: 240px"
+									v-if="item.eve.type === 'select'"
+									@visible-change="item.eve.event(item.eve.value)"
+								>
+									<el-option
+										v-for="d in item.eve.data"
+										:key="d.value"
+										:label="d.label"
+										:value="d.value"
+									/>
+								</el-select>
+								<el-input
+									v-if="item.eve.type === 'search'"
+									v-model="item.eve.value"
+									style="width: 240px"
+									placeholder="请输入关键字"
+									clearable
+									@keyup.enter="item.eve.event(item.eve.value)"
+								/>
+							</template>
+						</el-dropdown>
+					</template>
 				</slot>
 			</template>
 		</el-table-column>
@@ -159,8 +212,22 @@ onMounted(() => {
 	gap: 10px;
 }
 
-:deep(.el-checkbox) {
+.checkbox-item {
+	justify-content: space-between;
+	align-items: center;
 	cursor: move;
 	margin-right: 0;
+}
+.el-icon--right:hover {
+	color: #646cff;
+	cursor: pointer;
+}
+:deep(.cell) {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+:deep(.caret-wrapper) {
+	margin-left: 10px;
 }
 </style>

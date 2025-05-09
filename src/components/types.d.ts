@@ -1,3 +1,4 @@
+import type { TableColumnInstance } from 'element-plus'
 export interface ProTable {
 	loading?: boolean
 	data: any
@@ -17,11 +18,18 @@ interface Item {
 	address: string
 	tag: string
 }
-interface Column {
+interface Column extends TableColumnInstance {
 	type?: string
 	prop?: string
 	label?: string
 	checked?: boolean
 	size?: 'large' | 'default' | 'small'
 	render?: (value: any, row: Item, index: number) => any
+	eve?: eve
+}
+interface eve {
+	type: 'search' | 'select'
+	data?: any
+	value: any
+	event: any
 }
