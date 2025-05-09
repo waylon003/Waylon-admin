@@ -64,7 +64,13 @@ const tableRef = ref<InstanceType<typeof ElTable>>()
 defineExpose({ element: tableRef })
 </script>
 <template>
-	<el-table :data="currentData" v-loading="props.loading" v-bind="props.tableProps" ref="tableRef">
+	<el-table
+		:data="currentData"
+		v-loading="props.loading"
+		v-bind="props.tableProps"
+		v-on="props.tableEvent"
+		ref="tableRef"
+	>
 		<el-table-column v-if="isType" v-bind="props.column[0]"> </el-table-column>
 		<el-table-column v-for="item in columnList" :key="item.prop" v-bind="item">
 			<template #default="scope">

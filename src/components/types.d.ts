@@ -9,4 +9,5 @@ export interface ProTable {
 	paginationProps?: any
 	tableProps?: any
 	pageSizes?: any
+	tableEvent?: any
 }

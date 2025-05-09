@@ -72,10 +72,17 @@ loadData()
 const pageChange = (page: any, limit: any) => {
 	console.log(page, limit, '当前页和当前大小')
 }
-const childTableRef = ref()
+const childTable = ref()
 
 onMounted(() => {
-	console.log(childTableRef.value, '??????')
+	console.log(childTable.value, '??????')
+})
+
+const tableSelect = (selection: any, row: any) => {
+	console.log(selection, row, '用户选中')
+}
+const tableEvent = ref({
+	select: tableSelect,
 })
 </script>
 
@@ -84,11 +91,12 @@ onMounted(() => {
 		:data="data"
 		:column="column"
 		:loading="loading"
+		:table-event="tableEvent"
 		v-model:page="page"
 		v-model:limit="limit"
 		:total="total"
 		@changePaging="pageChange"
-		ref="childTableRef"
+		ref="childTable"
 	>
 		<template #date="{ row }"> 自定义内容：{{ row.date }} </template>
 		<template #date-header="{ column }"> 自定义表头：{{ column.label }} </template>
