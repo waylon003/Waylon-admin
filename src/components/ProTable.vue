@@ -1,10 +1,10 @@
 <script lang="tsx" setup>
-import type { ProTable } from './types'
+import type { Column, ProTable } from './types'
 import { ElTable } from 'element-plus'
+import Sortable from 'sortablejs'
 const tableColumnType = ['selection', 'index', 'expand']
 const props = withDefaults(defineProps<ProTable>(), {
 	loading: false,
-	data: [],
 	tableProps: {
 		border: true,
 		style: {
@@ -12,7 +12,6 @@ const props = withDefaults(defineProps<ProTable>(), {
 			height: '500px',
 		},
 	},
-	column: [],
 	paginationProps: {
 		background: true,
 		layout: 'total, sizes, prev, pager, next, jumper',
@@ -24,6 +23,7 @@ const props = withDefaults(defineProps<ProTable>(), {
 	total: 100,
 })
 const emit = defineEmits<{
+	'update:column': [columns: Column[]]
 	'update:page': [page: number]
 	changePaging: [page: number, limit: number]
 }>()
@@ -55,15 +55,64 @@ const currentData = computed(() => {
 	return props.data.slice(start, end)
 })
 
-const isType = computed(() => tableColumnType.includes(props.column[0]?.type))
+const isType = computed(() => tableColumnType.includes(props.column[0]?.type as string))
+const columnChecks = computed(() => (isType.value ? props.column.slice(1) : props.column))
 
-const columnList = computed(() => (isType ? props.column.slice(1) : props.column))
+const columnList = computed({
+	get(): Column[] {
+		return columnChecks.value.filter((item) => item.checked)
+	},
+	set(val: Column[]) {
+		emit('update:column', val)
+	},
+})
 
 const tableRef = ref<InstanceType<typeof ElTable>>()
 
 defineExpose({ element: tableRef })
+const checkRef = ref<HTMLElement>()
+onMounted(() => {
+	// 初始化拖拽
+	nextTick(() => {
+		const checkWrapper = checkRef.value?.querySelector('.checkbox-list') as HTMLElement
+		if (checkWrapper) {
+			Sortable.create(checkWrapper, {
+				animation: 300,
+				handle: '.el-checkbox',
+				onEnd({ newIndex, oldIndex }) {
+					if (typeof newIndex === 'number' && typeof oldIndex === 'number') {
+						console.log(columnChecks.value, 'columnChecks')
+						const columnCopy = [...columnChecks.value]
+						;[columnCopy[oldIndex], columnCopy[newIndex]] = [columnCopy[newIndex], columnCopy[oldIndex]]
+						columnList.value = columnCopy
+					}
+				},
+			})
+		}
+	})
+})
 </script>
 <template>
+	<div class="flex flex-end mb-20">
+		<el-dropdown>
+			<el-button type="primary">
+				列设置<el-icon class="el-icon--right"><arrow-down /></el-icon>
+			</el-button>
+			<template #dropdown>
+				<div class="p-20 flex-box" ref="checkRef">
+					<div class="checkbox-list">
+						<template v-for="(item, index) in columnChecks" :key="`${item.prop}-${item.label}`">
+							<el-checkbox
+								v-model="item.checked"
+								:label="index + 1 + '.' + item.label"
+								:size="item.size || 'large'"
+							/>
+						</template>
+					</div>
+				</div>
+			</template>
+		</el-dropdown>
+	</div>
 	<el-table
 		:data="currentData"
 		v-loading="props.loading"
@@ -103,4 +152,15 @@ defineExpose({ element: tableRef })
 	</div>
 </template>
 
-<style scoped></style>
+<style scoped lang="scss">
+.checkbox-list {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+:deep(.el-checkbox) {
+	cursor: move;
+	margin-right: 0;
+}
+</style>

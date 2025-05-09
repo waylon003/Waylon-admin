@@ -25,18 +25,22 @@ const column = ref([
 	{
 		prop: 'date',
 		label: '时间',
+		checked: true,
 	},
 	{
 		prop: 'name',
 		label: '名字',
+		checked: true,
 	},
 	{
 		prop: 'address',
 		label: '地址',
+		checked: true,
 	},
 	{
 		prop: 'tag',
 		label: 'tsx插槽标签',
+		checked: true,
 
 		/**
 		 *
@@ -54,6 +58,7 @@ const column = ref([
 		prop: 'tag',
 		label: 'slot标签',
 		slot: 'tag',
+		checked: false,
 	},
 ])
 const loading = ref(false)
@@ -94,7 +99,7 @@ const tableEvent = ref({
 <template>
 	<pro-table
 		:data="data"
-		:column="column"
+		v-model:column="column"
 		:loading="loading"
 		:table-event="tableEvent"
 		v-model:page="page"
