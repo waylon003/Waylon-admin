@@ -47,10 +47,14 @@ const loadData = () => {
 	}, 1000)
 }
 loadData()
-
 const pageChange = (page: any, limit: any) => {
 	console.log(page, limit, '当前页和当前大小')
 }
+const childTableRef = ref()
+
+onMounted(() => {
+	console.log(childTableRef.value, '??????')
+})
 </script>
 
 <template>
@@ -62,6 +66,7 @@ const pageChange = (page: any, limit: any) => {
 		v-model:limit="limit"
 		:total="total"
 		@changePaging="pageChange"
+		ref="childTableRef"
 	>
 		<template #date="{ row }"> 自定义内容：{{ row.date }} </template>
 		<template #date-header="{ column }"> 自定义表头：{{ column.label }} </template>

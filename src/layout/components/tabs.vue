@@ -11,7 +11,6 @@ const handleTabsRemove = (targetName: TabPaneName) => {
 onMounted(() => {
 	// 初始化拖拽
 	const tabWrapper = tabsRef.value?.querySelector('.el-tabs__nav') as HTMLElement
-	console.log(tabWrapper, 'tabWrappertabWrappertabWrapper')
 	if (tabWrapper) {
 		Sortable.create(tabWrapper, {
 			animation: 300,

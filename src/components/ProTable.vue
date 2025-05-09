@@ -1,10 +1,7 @@
 <script lang="ts" setup>
 import type { ProTable } from './types'
-enum tableColumnType {
-	type = ['selection', 'index', 'expand'],
-}
 import { ElTable } from 'element-plus'
-
+const tableColumnType = ['selection', 'index', 'expand']
 const props = withDefaults(defineProps<ProTable>(), {
 	loading: false,
 	data: [],
@@ -28,19 +25,29 @@ const props = withDefaults(defineProps<ProTable>(), {
 })
 const emit = defineEmits<{
 	'update:page': [page: number]
-	'update:limit': [limit: number]
 	changePaging: [page: number, limit: number]
 }>()
+// const pageModel = defineModel<number>('page', { required: true })
+const pageModel = computed({
+	get() {
+		return props.page
+	},
+	set(val) {
+		emit('update:page', val)
+	},
+})
+const limitModel = defineModel<number>('limit', { required: true })
 // 处理分页变化
 const handlePageChange = (page: number) => {
-	emit('update:page', page)
+	pageModel.value = page
 }
 
 const handleSizeChange = (limit: number) => {
-	emit('update:limit', limit)
+	limitModel.value = limit
 }
-const pageChange = (p: number, l: number) => {
-	emit('changePaging', p, l)
+
+const pageChange = (page: number, limit: number) => {
+	emit('changePaging', page, limit)
 }
 const currentData = computed(() => {
 	const start = (props.page - 1) * props.limit
@@ -48,7 +55,7 @@ const currentData = computed(() => {
 	return props.data.slice(start, end)
 })
 
-const isType = computed(() => tableColumnType.type.includes(props.column[0]?.type))
+const isType = computed(() => tableColumnType.includes(props.column[0]?.type))
 
 const columnList = computed(() => (isType ? props.column.slice(1) : props.column))
 
@@ -75,8 +82,8 @@ defineExpose({ element: tableRef })
 	<el-pagination
 		v-bind="props.paginationProps"
 		:total="props.total"
-		:page-size="props.limit"
-		:current-page="props.page"
+		:page-size="limitModel"
+		:current-page="pageModel"
 		@size-change="handleSizeChange"
 		@current-change="handlePageChange"
 		@change="pageChange"
