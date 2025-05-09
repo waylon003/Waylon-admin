@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script lang="tsx" setup>
 import type { ProTable } from './types'
 import { ElTable } from 'element-plus'
 const tableColumnType = ['selection', 'index', 'expand']
@@ -75,7 +75,12 @@ defineExpose({ element: tableRef })
 		<el-table-column v-for="item in columnList" :key="item.prop" v-bind="item">
 			<template #default="scope">
 				<slot :name="item.prop" v-bind="scope">
-					{{ scope.row[item.prop] }}
+					<template v-if="!item.render">
+						{{ scope.row[item.prop] }}
+					</template>
+					<template v-else>
+						<component :is="item.render(scope.row[item.prop], scope.row, scope.$index)" />
+					</template>
 				</slot>
 			</template>
 			<template #header="scope">
@@ -85,15 +90,17 @@ defineExpose({ element: tableRef })
 			</template>
 		</el-table-column>
 	</el-table>
-	<el-pagination
-		v-bind="props.paginationProps"
-		:total="props.total"
-		:page-size="limitModel"
-		:current-page="pageModel"
-		@size-change="handleSizeChange"
-		@current-change="handlePageChange"
-		@change="pageChange"
-	/>
+	<div class="flex flex-center mt-20">
+		<el-pagination
+			v-bind="props.paginationProps"
+			:total="props.total"
+			:page-size="limitModel"
+			:current-page="pageModel"
+			@size-change="handleSizeChange"
+			@current-change="handlePageChange"
+			@change="pageChange"
+		/>
+	</div>
 </template>
 
 <style scoped></style>

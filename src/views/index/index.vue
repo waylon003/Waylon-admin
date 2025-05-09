@@ -46,7 +46,8 @@ const column = ref([
 		 * @returns {JSX.Element} 返回一个JSX元素
 		 */
 		render: (text: any, row: Item, index: number) => {
-			return <el-tag type='primary'>{{ text }}</el-tag>
+			console.log(row, index, '当前数据')
+			return () => <el-tag type={text}>{text}</el-tag>
 		},
 	},
 	{
@@ -81,8 +82,12 @@ onMounted(() => {
 const tableSelect = (selection: any, row: any) => {
 	console.log(selection, row, '用户选中')
 }
+const tableSelectAll = (selection: any) => {
+	console.log(selection, 'selection')
+}
 const tableEvent = ref({
 	select: tableSelect,
+	selectAll: tableSelectAll,
 })
 </script>
 
