@@ -46,4 +46,9 @@ export default defineConfig({
 			resolvers: [ElementPlusResolver()],
 		}),
 	],
+	server: {
+		watch: {
+			usePolling: true, // 修复HMR热更新失效
+		},
+	},
 })

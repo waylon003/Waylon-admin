@@ -1,5 +1,5 @@
 <script lang="tsx" setup>
-import type { Column, ProTable } from './types'
+import type { Column, ProTable } from './ProTable'
 import { ElTable } from 'element-plus'
 import Sortable from 'sortablejs'
 const tableColumnType = ['selection', 'index', 'expand']
@@ -72,9 +72,6 @@ const columnList = computed({
 	},
 })
 
-const tableRef = ref<InstanceType<typeof ElTable>>()
-
-defineExpose({ element: tableRef })
 const checkRef = ref<HTMLElement>()
 onMounted(() => {
 	// 初始化拖拽
@@ -102,6 +99,9 @@ const fixedColumn = (string: 'left' | 'right', item: Column) => {
 		item.prop === column.prop ? { ...column, fixed: string } : column,
 	) as Column[]
 }
+const tableRef = ref<InstanceType<typeof ElTable>>()
+
+defineExpose({ element: tableRef })
 </script>
 <template>
 	<div class="flex flex-end mb-20">

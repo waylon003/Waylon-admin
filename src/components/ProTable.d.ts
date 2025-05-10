@@ -1,4 +1,4 @@
-import type { TableColumnInstance } from 'element-plus'
+import type { TableColumnInstance, TableProps } from 'element-plus'
 export interface ProTable {
 	loading?: boolean
 	data: any
@@ -8,7 +8,7 @@ export interface ProTable {
 	column: Column[]
 	type?: 'selection' | 'index' | 'expand' | 'default'
 	paginationProps?: any
-	tableProps?: any
+	tableProps?: TableProps
 	pageSizes?: any
 	tableEvent?: any
 }

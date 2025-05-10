@@ -46,19 +46,27 @@ const addressSearch = (keyword: string) => {
 		data.value = createData() // 如果关键字为空，恢复原始数据
 		return
 	}
+	loading.value = true
 	const regex = new RegExp(keyword, 'i') // 'i' 表示不区分大小写
 	data.value = data.value.filter((item) => {
 		return regex.test(item.address)
 	})
+	setTimeout(() => {
+		loading.value = false
+	}, 1000)
 }
 const numberSelect = (value: number) => {
 	if (!value) {
 		data.value = createData() // 如果关键字为空，恢复原始数据
 		return
 	}
+	loading.value = true
 	data.value = data.value.filter((item) => {
 		return item.dataNum < value && item.dataNum > value - 10
 	})
+	setTimeout(() => {
+		loading.value = false
+	}, 1000)
 }
 const column = ref([
 	{

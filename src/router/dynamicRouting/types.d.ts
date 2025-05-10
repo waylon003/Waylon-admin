@@ -41,17 +41,3 @@
 // 		permission?: string
 // 	}
 // }
- interface AppRouteRecordRaw {
-	path: string
-	name: string
-	meta?: {
-		title?: string
-		icon?: string
-		hidden?: boolean
-		keepAlive?: boolean
-		permission?: string
-	}
-	component: Component | (() => Promise<Component>)
-	redirect?: string
-	children?: AppRouteRecordRaw[]
-}
