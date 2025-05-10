@@ -137,57 +137,7 @@ const resetForm = () => {}
 					</el-form-item>
 				</el-col>
 			</template>
-			<!--			<el-col :span="6">-->
-			<!--				<el-form-item>-->
-			<!--					<template #default> </template>-->
-			<!--				</el-form-item>-->
-			<!--			</el-col>-->
 		</el-row>
-		<!--		<el-form-item label="Activity name" prop="name"> </el-form-item>-->
-		<!--		<el-form-item label="Activity zone" prop="region">-->
-		<!--			<el-select v-model="ruleForm.region" placeholder="Activity zone">-->
-		<!--				<el-option label="Zone one" value="shanghai" />-->
-		<!--				<el-option label="Zone two" value="beijing" />-->
-		<!--			</el-select>-->
-		<!--		</el-form-item>-->
-		<!--		<el-form-item label="Activity count" prop="count"> </el-form-item>-->
-		<!--		<el-form-item label="Activity time" required>-->
-		<!--			<el-col :span="11">-->
-		<!--				<el-form-item prop="date1">-->
-		<!--					<el-date-picker-->
-		<!--						v-model="ruleForm.date1"-->
-		<!--						type="date"-->
-		<!--						aria-label="Pick a date"-->
-		<!--						placeholder="Pick a date"-->
-		<!--						style="width: 100%"-->
-		<!--					/>-->
-		<!--				</el-form-item>-->
-		<!--			</el-col>-->
-		<!--			<el-col class="text-center" :span="2">-->
-		<!--				<span class="text-gray-500">-</span>-->
-		<!--			</el-col>-->
-		<!--			<el-col :span="11">-->
-		<!--				<el-form-item prop="date2">-->
-		<!--					<el-time-picker-->
-		<!--						v-model="ruleForm.date2"-->
-		<!--						aria-label="Pick a time"-->
-		<!--						placeholder="Pick a time"-->
-		<!--						style="width: 100%"-->
-		<!--					/>-->
-		<!--				</el-form-item>-->
-		<!--			</el-col>-->
-		<!--		</el-form-item>-->
-		<!--		<el-form-item label="Instant delivery" prop="delivery"> </el-form-item>-->
-		<!--		<el-form-item label="Activity location" prop="location"> </el-form-item>-->
-		<!--		<el-form-item label="Activity type" prop="type"> </el-form-item>-->
-		<!--		<el-form-item label="Resources" prop="resource"> </el-form-item>-->
-		<!--		<el-form-item label="Activity form" prop="desc">-->
-		<!--			<el-input v-model="ruleForm.desc" type="textarea" />-->
-		<!--		</el-form-item>-->
-		<!--		<el-form-item>-->
-		<!--			<el-button type="primary" @click="submitForm"> Create </el-button>-->
-		<!--			<el-button @click="resetForm">Reset</el-button>-->
-		<!--		</el-form-item>-->
 	</el-form>
 </template>
 

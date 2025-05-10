@@ -5,7 +5,7 @@ interface proFormItem extends FormItemProps {
 	showMessage?: FormItemProps['showMessage']
 	inlineMessage?: FormItemProps['inlineMessage']
 	slot?: boolean
-	expandedBox: boolean
+	expandedBox?: boolean
 	component: FormItemComponent
 }
 export interface ProForm {
