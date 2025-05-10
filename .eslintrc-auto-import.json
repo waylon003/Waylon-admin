@@ -94,6 +94,7 @@
     "useUserStore": true,
     "useTabsStore": true,
     "useSettingStore": true,
-    "ElMessage": true
+    "ElMessage": true,
+    "getTimeType": true
   }
 }

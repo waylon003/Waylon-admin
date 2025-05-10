@@ -8,8 +8,11 @@ interface proFormItem extends FormItemProps {
 	expandedBox?: string
 	component: FormItemComponent
 }
+interface FormModel {
+	[key: string]: any // 添加索引签名
+}
 export interface ProForm {
-	formModel: any
+	formModel: FormModel
 	formProps?: Partial<FormProps> & {
 		style?: {
 			maxWidth?: string

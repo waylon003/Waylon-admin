@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { FormInstance } from 'element-plus'
-import type { ProForm, proFormItem } from '@/components/ProForm'
+import type { FormModel, ProForm, proFormItem } from '@/components/ProForm'
+import { getTimeType } from '@/hooks/getTimeType.ts'
 
 const props = withDefaults(defineProps<ProForm>(), {
 	formProps: () => ({
@@ -12,9 +13,12 @@ const props = withDefaults(defineProps<ProForm>(), {
 })
 const emit = defineEmits<{
 	resetForm: [void]
+	submitForm: [void]
 }>()
-// const ruleForm = computed(() => props.formModel)
-const ruleForm = defineModel('formModel', { required: true })
+
+const ruleForm = computed<FormModel>(() => props.formModel)
+
+// const ruleForm = defineModel<FormModel>('formModel', { required: true })
 const ruleFormItemList = ref<proFormItem[]>([])
 const ruleFormItemArr = computed({
 	get() {
@@ -38,7 +42,31 @@ const toggleExpand = () => {
 watch(
 	() => props.formItem,
 	(val) => {
-		if (val) ruleFormItemList.value = JSON.parse(JSON.stringify(val))
+		if (val) {
+			const initData = val.map((item) => {
+				const { name, formKey } = item.component
+				if (name === 'date' && formKey) {
+					const timeType = getTimeType(ruleForm.value[formKey])
+					if (!item.component.expand) {
+						item.component.expand = {}
+					}
+					switch (timeType) {
+						case 'YYYY-MM-DD':
+						case 'date':
+						case 'timestamp':
+							item.component.expand.valueFormat = timeType
+							break
+						case 'string':
+							console.error(`无效的时间格式--请修改form-model对象中的${formKey}属性为YYYY-MM-DD`)
+							break
+						default:
+							console.error(`无效的时间格式--请修改form-model对象中的${formKey}属性`)
+					}
+				}
+				return item
+			})
+			ruleFormItemList.value = JSON.parse(JSON.stringify(initData))
+		}
 	},
 	{ once: true, immediate: true },
 )
@@ -58,7 +86,9 @@ const ruleFormRef = ref<FormInstance>()
 defineExpose({
 	formRef: ruleFormRef,
 })
-const submitForm = () => {}
+const submitForm = () => {
+	emit('submitForm')
+}
 const resetForm = () => {
 	if (ruleFormRef.value) ruleFormRef.value.resetFields()
 	emit('resetForm')

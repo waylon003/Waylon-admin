@@ -78,7 +78,7 @@ const getInitialState = () => ({
 	type: [],
 	resource: '',
 	desc: '',
-	date: [],
+	date: ['2012-12-01', '2012-12-31'],
 })
 const ruleForm = ref<RuleFormPro>(getInitialState())
 const formProps = ref<Partial<FormProps>>({
@@ -195,12 +195,7 @@ const resetForm = () => {}
 </script>
 
 <template>
-	<pro-form
-		v-model:form-model="ruleForm"
-		:formProps="formProps"
-		:formItem="forItemProps"
-		@resetForm="resetForm"
-	></pro-form>
+	<pro-form :form-model="ruleForm" :formProps="formProps" :formItem="forItemProps" @resetForm="resetForm"></pro-form>
 </template>
 
 <style scoped></style>
