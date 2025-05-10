@@ -5,7 +5,7 @@ interface proFormItem extends FormItemProps {
 	showMessage?: FormItemProps['showMessage']
 	inlineMessage?: FormItemProps['inlineMessage']
 	slot?: boolean
-	expandedBox?: boolean
+	expandedBox?: string
 	component: FormItemComponent
 }
 export interface ProForm {
@@ -20,7 +20,7 @@ export interface ProForm {
 }
 
 interface RuleFormPro {
-	name?: string
+	name?: any
 	region?: string
 	count?: string
 	date?: any[]

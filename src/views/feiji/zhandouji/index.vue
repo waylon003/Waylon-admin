@@ -70,7 +70,7 @@ const checkOptions = [
 	{ label: '嗯嗯嗯', value: 'eee' },
 ]
 const locationOptions = ['Home', 'Company', 'School']
-const ruleForm = reactive<RuleFormPro>({
+const getInitialState = () => ({
 	name: 'Hello',
 	count: '',
 	delivery: false,
@@ -80,6 +80,7 @@ const ruleForm = reactive<RuleFormPro>({
 	desc: '',
 	date: [],
 })
+const ruleForm = ref<RuleFormPro>(getInitialState())
 const formProps = ref<Partial<FormProps>>({
 	rules: rules,
 	inline: true,
@@ -190,10 +191,16 @@ watch(
 	},
 	{ deep: true, immediate: true },
 )
+const resetForm = () => {}
 </script>
 
 <template>
-	<pro-form :form-model="ruleForm" :formProps="formProps" :formItem="forItemProps"></pro-form>
+	<pro-form
+		v-model:form-model="ruleForm"
+		:formProps="formProps"
+		:formItem="forItemProps"
+		@resetForm="resetForm"
+	></pro-form>
 </template>
 
 <style scoped></style>

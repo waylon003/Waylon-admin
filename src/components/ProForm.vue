@@ -10,7 +10,11 @@ const props = withDefaults(defineProps<ProForm>(), {
 		},
 	}),
 })
-const ruleForm = computed(() => props.formModel)
+const emit = defineEmits<{
+	resetForm: [void]
+}>()
+// const ruleForm = computed(() => props.formModel)
+const ruleForm = defineModel('formModel', { required: true })
 const ruleFormItemList = ref<proFormItem[]>([])
 const ruleFormItemArr = computed({
 	get() {
@@ -19,8 +23,7 @@ const ruleFormItemArr = computed({
 		}
 		const copyFormItem = [...ruleFormItemList.value]
 		copyFormItem.push({
-			prop: 'expandedBox',
-			expandedBox: true,
+			expandedBox: 'expandedBox',
 		} as proFormItem)
 		return copyFormItem
 	},
@@ -35,7 +38,7 @@ const toggleExpand = () => {
 watch(
 	() => props.formItem,
 	(val) => {
-		if (Array.isArray(val)) ruleFormItemList.value = JSON.parse(JSON.stringify(val))
+		if (val) ruleFormItemList.value = JSON.parse(JSON.stringify(val))
 	},
 	{ once: true, immediate: true },
 )
@@ -56,13 +59,16 @@ defineExpose({
 	formRef: ruleFormRef,
 })
 const submitForm = () => {}
-const resetForm = () => {}
+const resetForm = () => {
+	if (ruleFormRef.value) ruleFormRef.value.resetFields()
+	emit('resetForm')
+}
 </script>
 
 <template>
 	<el-form ref="ruleFormRef" :model="ruleForm" v-bind="ruleFormProps">
 		<el-row>
-			<template v-for="item in ruleFormItemArr" :key="item.prop">
+			<template v-for="item in ruleFormItemArr" :key="item.prop || item.expandedBox">
 				<el-col :span="6">
 					<el-form-item v-bind="item">
 						<template #default v-if="item.slot">
