@@ -13,6 +13,7 @@ const getInitialState = () => ({
 const { list, total, params, loading, search } = userList({ api: createData, defaultParams: getInitialState() })
 const submitForm = () => {
 	search(ruleForm.value)
+	params.page = 1
 }
 const selectList = ref([
 	{
