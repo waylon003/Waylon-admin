@@ -47,8 +47,14 @@ export default defineConfig({
 		}),
 	],
 	server: {
-		watch: {
-			usePolling: true, // 修复HMR热更新失效
+		hmr: {
+			overlay: false,
 		},
+		watch: {
+			usePolling: false,
+		},
+	},
+	optimizeDeps: {
+		include: ['element-plus'],
 	},
 })

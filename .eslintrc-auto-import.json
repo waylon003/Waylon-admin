@@ -95,6 +95,11 @@
     "useTabsStore": true,
     "useSettingStore": true,
     "ElMessage": true,
-    "getTimeType": true
+    "getTimeType": true,
+    "userList": true,
+    "getRandomAddress": true,
+    "getRandomDate": true,
+    "getRandomName": true,
+    "createData": true
   }
 }

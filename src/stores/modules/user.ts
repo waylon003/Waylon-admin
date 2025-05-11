@@ -1,6 +1,7 @@
 import { fetchAuthLogin, fetchAuthLogout, fetchEmployeeInfo, fetchUserMenu } from '@/api'
 import router from '@/router'
 import { generateRoutes, getUserMenusList } from '@/router/dynamicRouting'
+import { getRandomAddress, getRandomName } from '@/hooks/floor.ts'
 export const useUserStore = defineStore(
 	'useUserStore',
 	() => {
@@ -8,7 +9,7 @@ export const useUserStore = defineStore(
 		const userInfo = ref<IEmployeeEntity>()
 		const userMenus = ref<any>()
 		const token = ref<string>()
-
+		const mockData = ref<MockItem[]>()
 		//登录
 		const login = async (user: loginParams) => {
 			token.value = await fetchAuthLogin(user)
@@ -53,8 +54,28 @@ export const useUserStore = defineStore(
 				console.error('生成路由出错：', error)
 			}
 		}
+		//mock表格数据
+		const mockTableData = () => {
+			const arr = []
+			for (let i = 0; i < 50; i++) {
+				arr.push({
+					date: getRandomDate(
+						Math.floor(Math.random() * (1704067200000 - 1672531200000)) + 1672531200000 + i,
+						1704067200000 - i,
+					),
+					name: getRandomName(),
+					address: getRandomAddress(),
+					tag: i % 2 === 0 ? 'primary' : 'success',
+					count: i,
+					sex: ['女', '男', '人妖'][Math.floor(Math.random() * 3)],
+				})
+			}
+			mockData.value = arr
+		}
 		return {
+			mockData,
 			addUserRoutes,
+			mockTableData,
 			userMenus,
 			userInfo,
 			token,

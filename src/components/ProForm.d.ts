@@ -23,15 +23,11 @@ export interface ProForm {
 }
 
 interface RuleFormPro {
-	name?: any
-	region?: string
-	count?: string
-	date?: any[]
-	delivery?: boolean
-	location?: string
-	type?: string[]
-	resource?: string
-	desc?: string
+	keywords: string
+	count: number | string // 修改为联合类型
+	location: string
+	sex: number | string // 修改为联合类型
+	date: any
 }
 type BaseOption = {
 	label: string

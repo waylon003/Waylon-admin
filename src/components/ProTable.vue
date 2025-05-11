@@ -54,11 +54,6 @@ const handleSizeChange = (limit: number) => {
 const pageChange = (page: number, limit: number) => {
 	emit('changePaging', page, limit)
 }
-const currentData = computed(() => {
-	const start = (props.page - 1) * props.limit
-	const end = start + props.limit
-	return props.data.slice(start, end)
-})
 
 const isType = computed(() => tableColumnType.includes(props.column[0]?.type as string))
 const columnChecks = computed(() => (isType.value ? props.column.slice(1) : props.column))
@@ -133,7 +128,7 @@ defineExpose({ element: tableRef })
 		</el-dropdown>
 	</div>
 	<el-table
-		:data="currentData"
+		:data="props.data"
 		v-loading="props.loading"
 		v-bind="props.tableProps"
 		v-on="props.tableEvent"

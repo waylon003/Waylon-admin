@@ -41,3 +41,11 @@ interface tabsList {
 	name: string
 	[T: string]: any
 }
+interface MockItem {
+	date: string
+	name: string
+	address: string
+	tag: string
+	count: number
+	sex: string
+}

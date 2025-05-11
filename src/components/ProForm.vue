@@ -93,19 +93,31 @@ const resetForm = () => {
 	if (ruleFormRef.value) ruleFormRef.value.resetFields()
 	emit('resetForm')
 }
+const getLastRowSpan = (index: number) => {
+	const itemsPerRow = 4 // 每行显示的列数
+	const totalItems = ruleFormItemArr.value.length
+	const remainingItems = totalItems % itemsPerRow
+	return remainingItems === 0 || index < totalItems - remainingItems ? 6 : Math.floor(24 / remainingItems)
+}
+
+const isLastRow = (index: number) => {
+	const itemsPerRow = 4 // 每行显示的列数
+	const totalItems = ruleFormItemArr.value.length
+	return index >= totalItems - (totalItems % itemsPerRow)
+}
 </script>
 
 <template>
 	<el-form ref="ruleFormRef" :model="ruleForm" v-bind="ruleFormProps">
 		<el-row>
-			<template v-for="item in ruleFormItemArr" :key="item.prop || item.expandedBox">
-				<el-col :span="6">
+			<template v-for="(item, index) in ruleFormItemArr" :key="item.prop || item.expandedBox">
+				<el-col :span="isLastRow(index) ? getLastRowSpan(index) : 6">
 					<el-form-item v-bind="item">
 						<template #default v-if="item.slot">
 							<slot :name="item.prop"> </slot>
 						</template>
 						<template #default v-if="item.expandedBox">
-							<div class="w-full flex flex-center">
+							<div class="w-full flex flex-end">
 								<el-button link type="primary" @click="toggleExpand">{{
 									isExpanded ? '展开' : '收起'
 								}}</el-button>

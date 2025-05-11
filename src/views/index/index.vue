@@ -1,23 +1,11 @@
 <script setup lang="tsx">
-interface Item {
-	date: string
-	name: string
-	address: string
-	tag: string
-	dataNum: number
-}
-const createData = (): Item[] => {
-	const arr: Item[] = []
-	for (let i = 0; i < 50; i++) {
-		arr.push({
-			date: `2016-05-03 xx${i}`,
-			name: '王小明',
-			address: '上海市普陀区金沙江路 1518' + i,
-			tag: i % 2 === 0 ? 'primary' : 'success',
-			dataNum: i,
-		})
-	}
-	return arr
+import type { RuleFormPro } from '@/components/ProForm'
+import type { FormProps } from 'element-plus'
+import { userList } from '@/hooks/useList.ts'
+import { createData } from '@/hooks/mockData.ts'
+const { list, total, params, loading, search } = userList({ api: createData, defaultParams: getInitialState() })
+const submitForm = () => {
+	search(ruleForm.value)
 }
 const selectList = ref([
 	{
@@ -41,33 +29,6 @@ const selectList = ref([
 		label: '40-49',
 	},
 ])
-const addressSearch = (keyword: string) => {
-	if (!keyword) {
-		data.value = createData() // 如果关键字为空，恢复原始数据
-		return
-	}
-	loading.value = true
-	const regex = new RegExp(keyword, 'i') // 'i' 表示不区分大小写
-	data.value = data.value.filter((item) => {
-		return regex.test(item.address)
-	})
-	setTimeout(() => {
-		loading.value = false
-	}, 1000)
-}
-const numberSelect = (value: number) => {
-	if (!value) {
-		data.value = createData() // 如果关键字为空，恢复原始数据
-		return
-	}
-	loading.value = true
-	data.value = data.value.filter((item) => {
-		return item.dataNum < value && item.dataNum > value - 10
-	})
-	setTimeout(() => {
-		loading.value = false
-	}, 1000)
-}
 const column = ref([
 	{
 		type: 'selection',
@@ -83,17 +44,22 @@ const column = ref([
 		checked: true,
 	},
 	{
+		prop: 'sex',
+		label: '性别',
+		checked: true,
+	},
+	{
 		prop: 'address',
 		label: '地址',
 		checked: true,
 		eve: {
 			type: 'search',
 			value: '',
-			event: addressSearch,
+			event: submitForm,
 		},
 	},
 	{
-		prop: 'dataNum',
+		prop: 'count',
 		label: '数字排序',
 		checked: true,
 		sortable: true,
@@ -101,7 +67,7 @@ const column = ref([
 			type: 'select',
 			data: selectList.value,
 			value: '',
-			event: numberSelect,
+			event: submitForm,
 		},
 	},
 	{
@@ -115,7 +81,7 @@ const column = ref([
 		 * @param {number} index  行索引
 		 * @returns {JSX.Element} 返回一个JSX元素
 		 */
-		render: (text: any, row: Item, index: number) => {
+		render: (text: any, row: MockItem, index: number) => {
 			console.log(row, index, '当前数据')
 			return () => <el-tag type={text}>{text}</el-tag>
 		},
@@ -127,29 +93,9 @@ const column = ref([
 		checked: false,
 	},
 ])
-
-const loading = ref(false)
-const page = ref(1)
-const limit = ref(10)
-const data = ref<Item[]>([])
-const total = ref(0)
-const loadData = () => {
-	loading.value = true
-	setTimeout(() => {
-		data.value = createData()
-		total.value = data.value.length
-		loading.value = false
-	}, 1000)
-}
-loadData()
 const pageChange = (page: any, limit: any) => {
 	console.log(page, limit, '当前页和当前大小')
 }
-const childTable = ref()
-
-onMounted(() => {
-	console.log(childTable.value, '??????')
-})
 
 const tableSelect = (selection: any, row: any) => {
 	console.log(selection, row, '用户选中')
@@ -161,22 +107,126 @@ const tableEvent = ref({
 	select: tableSelect,
 	selectAll: tableSelectAll,
 })
+
+const options = Array.from({ length: 50 }, (_, idx) => ({
+	value: `${idx + 1}`,
+	label: `${idx + 1}`,
+}))
+const radioOptions = [
+	{
+		label: '男',
+		value: 1,
+	},
+	{ label: '女', value: 0 },
+	{ label: '人妖', value: -1 },
+]
+
+const locationOptions = ['primary', 'success']
+const getInitialState = () => ({
+	keywords: '',
+	count: '',
+	location: '',
+	sex: '',
+	date: ['2012-12-01', '2012-12-31'],
+})
+const ruleForm = ref<RuleFormPro>(getInitialState())
+const formProps = ref<Partial<FormProps>>({
+	inline: true,
+})
+
+const forItemProps = ref([
+	{
+		label: '关键字',
+		prop: 'keywords',
+		component: {
+			name: 'input',
+			formKey: 'keywords',
+			expand: {
+				style: {
+					maxWidth: '250px',
+				},
+			},
+		},
+	},
+	{
+		label: '数字',
+		prop: 'count',
+		component: {
+			name: 'select',
+			formKey: 'count',
+			expand: {
+				options: options,
+				style: {
+					maxWidth: '250px',
+				},
+			},
+		},
+	},
+	{
+		label: '标签',
+		prop: 'location',
+		component: {
+			name: 'segmented',
+			formKey: 'location',
+			expand: {
+				options: locationOptions,
+				style: {
+					maxWidth: '250px',
+				},
+			},
+		},
+	},
+	{
+		label: '单选类型',
+		prop: 'sex',
+		component: {
+			name: 'radio',
+			formKey: 'sex',
+			expand: {
+				options: radioOptions,
+				style: {
+					maxWidth: '250px',
+				},
+			},
+		},
+	},
+	{
+		label: '时间',
+		prop: 'date',
+		component: {
+			name: 'date',
+			formKey: 'date',
+			type: 'daterange',
+			expand: {
+				style: {
+					maxWidth: '250px',
+				},
+			},
+		},
+	},
+])
 </script>
 
 <template>
+	<div class="mb-20 card">
+		<pro-form
+			:form-model="ruleForm"
+			:formProps="formProps"
+			:formItem="forItemProps"
+			@submitForm="submitForm"
+		></pro-form>
+	</div>
 	<pro-table
-		:data="data"
+		:data="list"
 		v-model:column="column"
 		:loading="loading"
 		:table-event="tableEvent"
-		v-model:page="page"
-		v-model:limit="limit"
+		v-model:page="params.page"
+		v-model:limit="params.limit"
 		:total="total"
 		@changePaging="pageChange"
 		ref="childTable"
 	>
-		<template #date="{ row }"> 自定义内容：{{ row.date }} </template>
-		<template #date-header="{ column }"> 自定义表头：{{ column.label }} </template>
 	</pro-table>
 </template>
 

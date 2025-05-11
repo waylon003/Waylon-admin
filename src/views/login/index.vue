@@ -10,7 +10,7 @@ const loading = ref(false)
 const countdown = ref(0)
 
 const formRef = ref<FormInstance>()
-const { login } = useUserStore()
+const { login, mockTableData } = useUserStore()
 
 const loginForm = ref<loginParams>({
 	phone: '13800013800',
@@ -65,6 +65,7 @@ const handleLogin = async (formEl: FormInstance | undefined) => {
 			try {
 				loginForm.value.type = loginType.value
 				await login(loginForm.value)
+				mockTableData()
 				ElMessage.success('登录成功')
 			} catch (error) {
 				console.error(error)
