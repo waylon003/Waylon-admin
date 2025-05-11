@@ -3,6 +3,13 @@ import type { RuleFormPro } from '@/components/ProForm'
 import type { FormProps } from 'element-plus'
 import { userList } from '@/hooks/useList.ts'
 import { createData } from '@/hooks/mockData.ts'
+const getInitialState = () => ({
+	keywords: '',
+	count: '',
+	location: '',
+	sex: '',
+	date: ['2012-12-01', '2012-12-31'],
+})
 const { list, total, params, loading, search } = userList({ api: createData, defaultParams: getInitialState() })
 const submitForm = () => {
 	search(ruleForm.value)
@@ -122,13 +129,7 @@ const radioOptions = [
 ]
 
 const locationOptions = ['primary', 'success']
-const getInitialState = () => ({
-	keywords: '',
-	count: '',
-	location: '',
-	sex: '',
-	date: ['2012-12-01', '2012-12-31'],
-})
+
 const ruleForm = ref<RuleFormPro>(getInitialState())
 const formProps = ref<Partial<FormProps>>({
 	inline: true,
