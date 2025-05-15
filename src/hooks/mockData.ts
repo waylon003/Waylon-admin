@@ -18,7 +18,7 @@ export const createData = (params: any): Promise<data> => {
 		const initData = filteredData.slice(start, end)
 
 		setTimeout(() => {
-			resolve({ list: initData, total: mockData!.length })
+			resolve({ list: initData, total: mockData?.length || 0 })
 		}, 2000)
 	})
 }

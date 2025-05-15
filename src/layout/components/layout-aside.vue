@@ -4,7 +4,15 @@ import LayoutMenu from '@/layout/components/layout-menu.vue'
 const { userMenus } = useUserStore()
 const { isCollapse } = storeToRefs(useSettingStore())
 const route = useRoute()
-const activeName = route.name
+const activeName = ref()
+
+watch(
+	() => route.name,
+	(val) => {
+		activeName.value = val
+	},
+	{ immediate: true },
+)
 </script>
 
 <template>

@@ -11,14 +11,14 @@ const handleClickMenu = (item: any) => {
 
 <template>
 	<template v-for="item in menuList" :key="item.name">
-		<el-sub-menu v-if="item.children?.length" :index="item.name">
+		<el-sub-menu v-if="item.children?.length" :index="item.name" :route="item.name">
 			<template #title>
 				<el-icon> <component :is="item.icon"></component></el-icon>
 				<span class="layout-menu__title">{{ item!.title }}</span>
 			</template>
 			<layout-menu :menuList="item.children"></layout-menu>
 		</el-sub-menu>
-		<el-menu-item v-else :index="item.name" @click="handleClickMenu(item)">
+		<el-menu-item v-else :route="item.name" :index="item.name" @click="handleClickMenu(item)">
 			<el-icon> <component :is="item.icon"></component></el-icon>
 			<template #title>
 				<span class="layout-menu__title">{{ item!.title }}</span>

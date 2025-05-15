@@ -1,58 +1,7 @@
 <script setup lang="ts">
 import type { proFormItem, RuleFormPro } from '@/components/ProForm'
-import type { FormProps, FormRules } from 'element-plus'
-const rules = reactive<FormRules<RuleFormPro>>({
-	name: [
-		{ required: true, message: 'Please input Activity name', trigger: 'blur' },
-		{ min: 3, max: 5, message: 'Length should be 3 to 5', trigger: 'blur' },
-	],
-	region: [
-		{
-			required: true,
-			message: 'Please select Activity zone',
-			trigger: 'change',
-		},
-	],
-	count: [
-		{
-			required: true,
-			message: 'Please select Activity count',
-			trigger: 'change',
-		},
-	],
-	date: [
-		{
-			type: 'array',
-			required: true,
-			message: 'Please pick a date',
-			trigger: 'change',
-		},
-	],
-	location: [
-		{
-			required: true,
-			message: 'Please select a location',
-			trigger: 'change',
-		},
-	],
-	type: [
-		{
-			type: 'array',
-			required: true,
-			message: 'Please select at least one activity type',
-			trigger: 'change',
-		},
-	],
-	resource: [
-		{
-			required: true,
-			message: 'Please select activity resource',
-			trigger: 'change',
-		},
-	],
-	desc: [{ required: true, message: 'Please input activity form', trigger: 'blur' }],
-})
-const options = Array.from({ length: 10000 }, (_, idx) => ({
+import type { FormProps } from 'element-plus'
+const options = Array.from({ length: 50 }, (_, idx) => ({
 	value: `${idx + 1}`,
 	label: `${idx + 1}`,
 }))
@@ -71,28 +20,24 @@ const checkOptions = [
 ]
 const locationOptions = ['Home', 'Company', 'School']
 const getInitialState = () => ({
-	name: 'Hello',
+	keywords: '',
 	count: '',
-	delivery: false,
 	location: '',
-	type: [],
-	resource: '',
-	desc: '',
+	sex: '',
 	date: ['2012-12-01', '2012-12-31'],
 })
 const ruleForm = ref<RuleFormPro>(getInitialState())
 const formProps = ref<Partial<FormProps>>({
-	rules: rules,
 	inline: true,
 })
 
 const forItemProps = ref<proFormItem[]>([
 	{
-		label: '姓名',
-		prop: 'name',
+		label: '关键字',
+		prop: 'keywords',
 		component: {
 			name: 'input',
-			formKey: 'name',
+			formKey: 'keywords',
 			expand: {
 				style: {
 					maxWidth: '250px',
